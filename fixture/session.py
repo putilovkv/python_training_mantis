@@ -3,21 +3,22 @@ from fixture.base_helper import BaseHelper
 
 class SessionHelper(BaseHelper):
 
-    def __init__(self, app, username: str, password: str):
+    def __init__(self, app):
         super().__init__(app)
-        self.username = username
-        self.password = password
+        self.webadmin_config = app.config["webadmin"]
 
     def login(self, username: str, password: str):
         wd = self.app.wd
         self.app.navigation.open_home_page()
+        if self.is_logged_in():
+            self.logout()
         self._change_field("username", username)
         self._change_field("password", password)
         wd.find_element_by_xpath("//input[@value='Login']").click()
 
     def login_if_not_logged(self):
         if not self.is_logged_in():
-            self.login(username=self.username, password=self.password)
+            self.login(username=self.webadmin_config["username"], password=self.webadmin_config["password"])
 
     def logout(self):
         wd = self.app.wd

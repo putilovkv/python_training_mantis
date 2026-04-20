@@ -1,15 +1,23 @@
+import time
 from fixture.base_helper import BaseHelper
 
 
 class NavigationHelper(BaseHelper):
 
-    def __init__(self, app, base_url):
+    def __init__(self, app):
         super().__init__(app)
-        self.base_url = base_url
+        self.web_config = app.config["web"]
+
+    def open_page(self, url, sleep_interval = 0):
+        wd = self.app.wd
+        wd.get(url)
+        time.sleep(sleep_interval)
 
     def open_home_page(self):
-        wd = self.app.wd
-        wd.get(self.base_url)
+        self.open_page(self.web_config["baseUrl"])
+
+    def open_signup_page(self):
+        self.open_page(self.web_config["baseUrl"] + "/signup_page.php")
 
     def go_to_project_page(self):
         wd = self.app.wd
