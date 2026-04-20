@@ -10,8 +10,7 @@ class SessionHelper(BaseHelper):
     def login(self, username: str, password: str):
         wd = self.app.wd
         self.app.navigation.open_home_page()
-        if self.is_logged_in():
-            self.logout()
+        self.ensure_logout()
         self._change_field("username", username)
         self._change_field("password", password)
         wd.find_element_by_xpath("//input[@value='Login']").click()
